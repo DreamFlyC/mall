@@ -89,9 +89,9 @@
       <if test="role != null">
         role,
       </if>
-      <if test="createTime != null">
+
         create_time,
-      </if>
+
       <if test="updateTime != null">
         update_time,
       </if>
@@ -121,9 +121,9 @@
       <if test="role != null">
         #{role,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
+
+       now(),
+
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
@@ -183,4 +183,49 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="checkUserName" parameterType="User" resultType="int">
+    select count(1) from mmall_user
+    <where>
+      username=#{username}
+    </where>
+  </select>
+
+  <select id="checkEmail" parameterType="User" resultType="int">
+    select count(1) from mmall_user
+    <where>
+      email=#{email}
+    </where>
+  </select>
+  <select id="checkPhone" parameterType="User" resultType="int">
+    select count(1) from mmall_user
+    <where>
+      phone=#{phone}
+    </where>
+  </select>
+
+  <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from mmall_user
+    where phone = #{phone}
+    and password = #{password}
+  </select>
+
+  <select id="getUserInfo" parameterType="User" resultMap="BaseResultMap">
+    select * from mmall_user
+    <where>
+      id=#{id}
+    </where>
+  </select>
+
+  <select id="getQuestion" parameterType="String" resultType="java.lang.String">
+    select question from mmall_user
+    where username=#{username}
+  </select>
+
+  <select id="forgetCheckAnswer" parameterType="map" resultType="int">
+    select count(1) from mmall_user
+    where username=#{username} and question=#{question} and answer=#{answer}
+  </select>
 </mapper>

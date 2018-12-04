@@ -25,6 +25,17 @@
     <mvc:resources mapping="/fonts/**" location="/fonts/" />
     <mvc:resources mapping="/helpdoc/**" location="/helpdoc/" />
 
+
+    <!--cors跨域支持-->
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="*"
+                     allowed-methods="GET,POST,PUT,DELETE,OPTIONS"
+                     allowed-headers="Content-Type,token"
+                     allow-credentials="true"
+                     max-age="123" />
+    </mvc:cors>
+
     <!-- 定义跳转的文件的前后缀 ，视图模式配置-->
    <!-- <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver">

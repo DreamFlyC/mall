@@ -11,5 +11,15 @@ import com.fun.mall.entity.User;
  * @Version: 1.0$
  */
 public interface IUserService {
-    ServerResponse<User> login(String username, String password);
+    ServerResponse<User> login(String phone, String password);
+
+    ServerResponse<User> register(User user);
+
+    ServerResponse checkValid(String str, String type);
+
+    ServerResponse getUserInfo(User user);
+
+    ServerResponse forgetQuestion(String username);
+
+    ServerResponse forgetCheckAnswer(String username, String question, String answer);
 }

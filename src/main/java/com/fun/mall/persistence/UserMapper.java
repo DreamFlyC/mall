@@ -1,6 +1,7 @@
 package com.fun.mall.persistence;
 
 import com.fun.mall.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
     /**
@@ -50,4 +51,18 @@ public interface UserMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(User record);
+
+    int checkUserName(String username);
+
+    User selectLogin(@Param("phone") String phone, @Param("password") String password);
+
+    int checkEmail(String email);
+
+    int checkPhone(String str);
+
+    User getUserInfo(int id);
+
+    String getQuestion(String username);
+
+    int forgetCheckAnswer(@Param("username") String username, @Param("question") String question, @Param("answer") String answer);
 }

@@ -14,14 +14,14 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
 
-  <error-page>  <!--当系统出现404错误，跳转到页面error.html-->
+  <!--<error-page>  &lt;!&ndash;当系统出现404错误，跳转到页面error.html&ndash;&gt;
     <error-code>404</error-code>
     <location>/error.html</location>
   </error-page>
-  <error-page>  <!--当系统出现Exception，跳转到页面error.html-->
+  <error-page>  &lt;!&ndash;当系统出现Exception，跳转到页面error.html&ndash;&gt;
       <exception-type>java.lang.Exception</exception-type>
       <location>/error.html</location>
-  </error-page>
+  </error-page>-->
 
 
   <filter>
@@ -40,7 +40,6 @@
     <filter-name>characterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
 
   <listener>
     <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
