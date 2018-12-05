@@ -8,3 +8,8 @@
 out
 gen
 .gitignore
+/logs/
+
+
+/target/
+/log/
