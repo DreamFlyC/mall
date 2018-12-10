@@ -1,6 +1,6 @@
 package com.fun.mall.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.Date;
 

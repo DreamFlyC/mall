@@ -4,6 +4,8 @@ import com.fun.mall.common.Const;
 import com.fun.mall.common.ServerResponse;
 import com.fun.mall.entity.User;
 import com.fun.mall.service.IUserService;
+import com.fun.mall.util.JsonUtil;
+import com.fun.mall.util.RedisPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +45,10 @@ public class UserAction {
         log.info("username:{},password:{}",phone,password);
         ServerResponse<User> response=userService.login(phone,password);
         if(response.isSuccess()){
-            session.setAttribute(Const.CURRENT_USER,response.getData());
+
+            RedisPoolUtil.setex(session.getId(),Const.RedisCacheExtime.REDIS_SESSION_EXTIME, JsonUtil.objToString(response));
+
+           // session.setAttribute(Const.CURRENT_USER,response.getData());
         }
         return response;
     }

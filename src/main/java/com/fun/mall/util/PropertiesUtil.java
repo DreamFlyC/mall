@@ -5,11 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-/**
- * Created by geely
+/*
+ * create by: CZP
+ * description:配置文件工具类
+ * create time: 14:44 2018/12/5
+ * @return 
  */
 public class PropertiesUtil {
 
@@ -47,6 +51,30 @@ public class PropertiesUtil {
         return value.trim();
     }
 
+    //加载redis配置文件
+    public static Properties loadProperties(String propertyFile){
+        Properties properties=new Properties();
+        InputStream is=PropertiesUtil.class.getClassLoader().getResourceAsStream(propertyFile);
+        try {
+            if (is==null){
+                is=PropertiesUtil.class.getClassLoader().getResourceAsStream("resources/"+propertyFile);
+            }
+            properties.load(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties;
+    }
 
+    /*
+     * create by: CZP
+     * description:根据key值取得对应的value值
+     * create time: 14:39 2018/12/5
+     * @return
+     */
+    public static String getValue(String propertyFile,String key){
+        Properties properties=loadProperties(propertyFile);
+        return properties.getProperty(key);
+    }
 
 }
