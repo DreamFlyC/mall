@@ -4,6 +4,7 @@ import com.fun.mall.common.Const;
 import com.fun.mall.common.ServerResponse;
 import com.fun.mall.entity.User;
 import com.fun.mall.service.IUserService;
+import com.fun.mall.util.CookieUtil;
 import com.fun.mall.util.JsonUtil;
 import com.fun.mall.util.RedisPoolUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -41,10 +44,15 @@ public class UserAction {
      */
     @RequestMapping(value = "/login.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> login(@RequestParam("phone") String phone, @RequestParam("password") String password, HttpSession session){
+    public ServerResponse<User> login(@RequestParam("phone") String phone, @RequestParam("password") String password, HttpSession session,
+                                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest){
         log.info("username:{},password:{}",phone,password);
         ServerResponse<User> response=userService.login(phone,password);
         if(response.isSuccess()){
+
+            CookieUtil.writeLoginToken(httpServletResponse,session.getId());
+            CookieUtil.readLoginToken(httpServletRequest);
+            CookieUtil.delLoginToken(httpServletRequest,httpServletResponse);
 
             RedisPoolUtil.setex(session.getId(),Const.RedisCacheExtime.REDIS_SESSION_EXTIME, JsonUtil.objToString(response));
 
