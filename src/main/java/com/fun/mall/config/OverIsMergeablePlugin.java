@@ -1,4 +1,4 @@
-package com.fun.mall.util;
+package com.fun.mall.config;
 
 import org.mybatis.generator.api.GeneratedXmlFile;
 import org.mybatis.generator.api.IntrospectedTable;
