@@ -62,11 +62,10 @@ public class RedisPool {
     }
 
     public static void returnResource(Jedis jedis){
-        pool.returnResource(jedis);
+        if(jedis!=null){
+            jedis.close();
+        }
     }
 
-    public static void returnBrokenResource(Jedis jedis){
-        pool.returnBrokenResource(jedis);
-    }
 
 }

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CookieUtil {
     private static Logger log= LoggerFactory.getLogger(CookieUtil.class);
 
-    private final static String COOKIE_DOMAIN=".happymmall.com";
+    private final static String COOKIE_DOMAIN="happymmall.com";
     private final static String COOKIE_NAME="mmall_login_token";
 
     public static String readLoginToken(HttpServletRequest request){
