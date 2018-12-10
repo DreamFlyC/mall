@@ -1,4 +1,4 @@
-package com.fun.mall.util;
+package com.fun.mall.filter;
 
 import org.springframework.stereotype.Component;
 

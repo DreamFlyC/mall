@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CookieUtil {
     private static Logger log= LoggerFactory.getLogger(CookieUtil.class);
 
-    private final static String COOKIE_DOMAIN="happymmall.com";
+    private final static String COOKIE_DOMAIN="www.happymmall.com";
     private final static String COOKIE_NAME="mmall_login_token";
 
     public static String readLoginToken(HttpServletRequest request){
@@ -42,7 +42,7 @@ public class CookieUtil {
         ck.setPath("/");
         ck.setHttpOnly(true);
         ck.setMaxAge(60*30);
-        log.info("write cookieNmae:{},cookieValue:{}",ck.getName(),ck.getValue());
+        log.info("write cookieName:{},cookieValue:{}",ck.getName(),ck.getValue());
         response.addCookie(ck);
 
     }
@@ -55,7 +55,7 @@ public class CookieUtil {
                     ck.setDomain(COOKIE_DOMAIN);
                     ck.setPath("/");
                     ck.setMaxAge(0);
-                    log.info("del cookieNmae:{},cookieValue:{}",ck.getName(),ck.getValue());
+                    log.info("del cookieName:{},cookieValue:{}",ck.getName(),ck.getValue());
                     response.addCookie(ck);
                     return;
                 }

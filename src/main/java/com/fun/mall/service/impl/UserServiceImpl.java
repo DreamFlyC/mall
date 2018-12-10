@@ -127,6 +127,9 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public ServerResponse getUserInfo(User user){
+        if(user==null){
+            return ServerResponse.createByErrorMessage("参数错误");
+        }
         User userInfo=userMapper.getUserInfo(user.getId());
         if(userInfo==null){
             return ServerResponse.createByErrorMessage("参数错误");
