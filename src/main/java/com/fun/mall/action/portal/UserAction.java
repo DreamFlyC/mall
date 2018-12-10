@@ -51,9 +51,6 @@ public class UserAction {
         if(response.isSuccess()){
 
             CookieUtil.writeLoginToken(httpServletResponse,session.getId());
-            CookieUtil.readLoginToken(httpServletRequest);
-            CookieUtil.delLoginToken(httpServletRequest,httpServletResponse);
-
             RedisPoolUtil.setex(session.getId(),Const.RedisCacheExtime.REDIS_SESSION_EXTIME, JsonUtil.objToString(response));
 
            // session.setAttribute(Const.CURRENT_USER,response.getData());
@@ -63,8 +60,12 @@ public class UserAction {
 
     @RequestMapping(value = "/logout.do")
     @ResponseBody
-    public ServerResponse<User> logOut(HttpSession session){
-        session.removeAttribute(Const.CURRENT_USER);
+    public ServerResponse<User> logOut(HttpSession session,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
+//        session.removeAttribute(Const.CURRENT_USER);
+
+        String loginToken=CookieUtil.readLoginToken(httpServletRequest);
+        CookieUtil.delLoginToken(httpServletRequest,httpServletResponse);
+        RedisPoolUtil.del(loginToken);
         return ServerResponse.createBySuccess();
     }
 
@@ -101,11 +102,15 @@ public class UserAction {
      */
     @RequestMapping(value = "/get_user_info.do")
     @ResponseBody
-    public ServerResponse getUserInfo(HttpSession session){
-        User user=(User)session.getAttribute(Const.CURRENT_USER);
-        if(user==null){
+    public ServerResponse getUserInfo(HttpSession session,HttpServletRequest httpServletRequest){
+//        User user=(User)session.getAttribute(Const.CURRENT_USER);
+
+        String loginToken=CookieUtil.readLoginToken(httpServletRequest);
+        if(StringUtils.isEmpty(loginToken)){
             return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户信息");
         }
+        String userJsonStr=RedisPoolUtil.get(loginToken);
+        User user=JsonUtil.stringToObj(userJsonStr,User.class);
         return userService.getUserInfo(user);
     }
     
