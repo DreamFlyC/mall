@@ -111,7 +111,10 @@ public class UserAction {
         }
         String userJsonStr=RedisPoolUtil.get(loginToken);
         User user=JsonUtil.stringToObj(userJsonStr,User.class);
-        return userService.getUserInfo(user);
+        if(user!=null){
+            return userService.getUserInfo(user);
+        }
+        return null;
     }
     
     /*
