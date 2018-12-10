@@ -102,7 +102,7 @@ public class UserAction {
      */
     @RequestMapping(value = "/get_user_info.do")
     @ResponseBody
-    public ServerResponse getUserInfo(HttpSession session,HttpServletRequest httpServletRequest){
+    public ServerResponse getUserInfo(HttpServletRequest httpServletRequest){
 //        User user=(User)session.getAttribute(Const.CURRENT_USER);
 
         String loginToken=CookieUtil.readLoginToken(httpServletRequest);
