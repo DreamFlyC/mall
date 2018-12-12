@@ -6,7 +6,7 @@ import com.fun.mall.entity.User;
 import com.fun.mall.service.IUserService;
 import com.fun.mall.util.CookieUtil;
 import com.fun.mall.util.JsonUtil;
-import com.fun.mall.util.RedisPoolUtil;
+import com.fun.mall.util.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,27 +45,25 @@ public class UserAction {
     @RequestMapping(value = "/login.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> login(@RequestParam("phone") String phone, @RequestParam("password") String password, HttpSession session,
-                                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest){
+                                      HttpServletResponse httpServletResponse){
         log.info("username:{},password:{}",phone,password);
         ServerResponse<User> response=userService.login(phone,password);
         if(response.isSuccess()){
-
             CookieUtil.writeLoginToken(httpServletResponse,session.getId());
-            RedisPoolUtil.setex(session.getId(),Const.RedisCacheExtime.REDIS_SESSION_EXTIME, JsonUtil.objToString(response));
+            RedisShardedPoolUtil.setex(session.getId(),Const.RedisCacheExtime.REDIS_SESSION_EXTIME, JsonUtil.objToString(response.getData()));
 
-           // session.setAttribute(Const.CURRENT_USER,response.getData());
         }
         return response;
     }
 
     @RequestMapping(value = "/logout.do")
     @ResponseBody
-    public ServerResponse<User> logOut(HttpSession session,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
+    public ServerResponse<User> logOut(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
 //        session.removeAttribute(Const.CURRENT_USER);
 
         String loginToken=CookieUtil.readLoginToken(httpServletRequest);
         CookieUtil.delLoginToken(httpServletRequest,httpServletResponse);
-        RedisPoolUtil.del(loginToken);
+        RedisShardedPoolUtil.del(loginToken);
         return ServerResponse.createBySuccess();
     }
 
@@ -109,7 +107,7 @@ public class UserAction {
         if(StringUtils.isEmpty(loginToken)){
             return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户信息");
         }
-        String userJsonStr=RedisPoolUtil.get(loginToken);
+        String userJsonStr=RedisShardedPoolUtil.get(loginToken);
         User user=JsonUtil.stringToObj(userJsonStr,User.class);
         return userService.getUserInfo(user);
     }
