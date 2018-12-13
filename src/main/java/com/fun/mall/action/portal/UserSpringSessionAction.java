@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  * @ Modified By：
  * @Version: 1.0$
  */
-@Controller(value = "UserAction")
+@Controller(value = "UserSpringSessionAction")
 @RequestMapping(value = "/user/springsession")
 @CrossOrigin(origins = "*")
 public class UserSpringSessionAction {

@@ -13,7 +13,7 @@
     <context:annotation-config />
 
     <!--可以將redis配置写入配置文件中-->
-    <context:property-placeholder ignore-unresolvable="true" location="mall.properties"/>
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:mall.properties"/>
 
     <!--必须声明-->
     <bean id="redisHttpSessionConfiguration" class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
@@ -33,8 +33,8 @@
 
     <!--集群Redis-->
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <!-- Redis Sentinel -->
-        <constructor-arg index="0" ref="redisSentinelConfig"/>
+        <!-- 集群模式配置 -->
+        <constructor-arg index="0" ref="redisClusterConfig"/>
         <!--配置Redis连接池 ，可以不配置，使用默认就行！-->
         <constructor-arg index="1" ref="jedisPoolConfig" />
     </bean>
@@ -61,16 +61,13 @@
         <!--连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true-->
         <property name="blockWhenExhausted" value="${redis.blockWhenExhausted}"/>
 
-        <!--设置的逐出策略类名, 默认DefaultEvictionPolicy(当连接超过最大空闲时间,或连接数超过最大空闲连接数)-->
-        <property name="evictionPolicyClassName" value="${redis.evictionPolicyClassName}"/>
     </bean>
 
     <!-- 哨兵模式配置 -->
     <bean id="redisSentinelConfig" class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
-        <property name="password" value="${redis.sentinel.password}"/>
         <property name="master">
             <bean class="org.springframework.data.redis.connection.RedisNode">
-                <property name="name" value="mymaster"/>
+                <property name="name" value="${redis.sentinel.masterName}"/>
             </bean>
         </property>
         <property name="sentinels">
@@ -94,7 +91,6 @@
     <!-- 集群模式配置 -->
     <bean id="redisClusterConfig" class="org.springframework.data.redis.connection.RedisClusterConfiguration">
         <property name="maxRedirects" value="${redis.cluster.maxRedirects}"/>
-        <property name="password" value="${redis.cluster.password}"/>
         <property name="clusterNodes">
             <set>
                 <bean id="cluster0" class="org.springframework.data.redis.connection.RedisNode">
@@ -125,5 +121,22 @@
         </property>
     </bean>
 
+    <!-- 缓存序列化方式 -->
+    <bean id="keySerializer" class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+    <bean id="valueSerializer" class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
 
+    <!-- 缓存 -->
+    <!--<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+        <property name="keySerializer" ref="keySerializer" />
+        <property name="valueSerializer" ref="valueSerializer" />
+        <property name="hashKeySerializer" ref="keySerializer" />
+        <property name="hashValueSerializer" ref="valueSerializer" />
+        <property name="enableTransactionSupport" value="true" />
+    </bean>
+
+    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheConfiguration">
+        <constructor-arg index="0" ref="redisTemplate" />
+        <property name="defaultExpiration" value="${redis.expiration}" />
+    </bean>-->
 </beans>

@@ -13,7 +13,7 @@
     <context:component-scan base-package="com.fun.mall" annotation-config="true"/>
 
     <!-- 配置数据库相关参数properties的属性：${url} -->
-    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:jdbc.properties"/>
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
