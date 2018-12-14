@@ -39,13 +39,13 @@ public class UserSpringSessionAction {
      * @Param: null
      * @return
      */
-    @RequestMapping(value = "/login.do",method = RequestMethod.POST)
+    @RequestMapping(value = "/login.do",method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<User> login(@RequestParam("phone") String phone, @RequestParam("password") String password,
                                       HttpSession session){
         ServerResponse<User> response=userService.login(phone,password);
         if(response.isSuccess()){
-            session.setAttribute(session.getId(),response.getData());
+            session.setAttribute(Const.CURRENT_USER,response.getData());
         }
         return response;
     }
@@ -96,6 +96,9 @@ public class UserSpringSessionAction {
     @ResponseBody
     public ServerResponse getUserInfo(HttpSession session,HttpServletRequest httpServletRequest){
         User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if(user==null){
+            return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户信息");
+        }
 
        /* String loginToken=CookieUtil.readLoginToken(httpServletRequest);
         if(StringUtils.isEmpty(loginToken)){

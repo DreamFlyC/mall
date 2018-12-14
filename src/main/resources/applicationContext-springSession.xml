@@ -20,6 +20,14 @@
         <property name="maxInactiveIntervalInSeconds" value="1800"/>
     </bean>
 
+    <bean id="defaultCookieSerializer" class="org.springframework.session.web.http.DefaultCookieSerializer">
+        <property name="cookieName" value="SESSION_LOGIN" />
+        <property name="domainName" value="happymmall.com" />
+        <property name="useHttpOnlyCookie" value="true" />
+        <property name="cookiePath" value="/" />
+        <property name="cookieMaxAge" value="31560000" />
+    </bean>
+
     <!--创建一个Spring Bean的名称springSessionRepositoryFilter实现过滤器。
    筛选器负责将HttpSession实现替换为Spring会话支持。在这个实例中，Spring会话得到了Redis的支持。-->
     <!--单机Redis-->
