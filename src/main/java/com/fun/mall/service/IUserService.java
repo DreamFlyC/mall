@@ -22,4 +22,6 @@ public interface IUserService {
     ServerResponse forgetQuestion(String username);
 
     ServerResponse forgetCheckAnswer(String username, String question, String answer);
+
+    ServerResponse test();
 }

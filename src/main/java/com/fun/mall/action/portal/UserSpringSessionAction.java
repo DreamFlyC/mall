@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -20,7 +18,7 @@ import javax.servlet.http.HttpSession;
  * @ Date       ：Created in 10:36 2018/11/23
  * @ Description：用户模块--spring-session
  * @ Modified By：
- * @Version: 1.0$
+ * @ Version: 1.0$
  */
 @Controller(value = "UserSpringSessionAction")
 @RequestMapping(value = "/user/springsession")
@@ -29,8 +27,12 @@ public class UserSpringSessionAction {
 
     private  static Logger log= LoggerFactory.getLogger(UserSpringSessionAction.class);
 
+    private final IUserService userService;
+
     @Autowired
-    private IUserService userService;
+    public UserSpringSessionAction(IUserService userService) {
+        this.userService = userService;
+    }
 
     /*
      * create by: CZP
@@ -52,7 +54,7 @@ public class UserSpringSessionAction {
 
     @RequestMapping(value = "/logout.do")
     @ResponseBody
-    public ServerResponse<User> logOut(HttpSession session,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
+    public ServerResponse<User> logOut(HttpSession session){
         session.removeAttribute(Const.CURRENT_USER);
 
         /*String loginToken=CookieUtil.readLoginToken(httpServletRequest);
@@ -94,7 +96,7 @@ public class UserSpringSessionAction {
      */
     @RequestMapping(value = "/get_user_info.do")
     @ResponseBody
-    public ServerResponse getUserInfo(HttpSession session,HttpServletRequest httpServletRequest){
+    public ServerResponse getUserInfo(HttpSession session){
         User user=(User)session.getAttribute(Const.CURRENT_USER);
         if(user==null){
             return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户信息");
@@ -144,5 +146,15 @@ public class UserSpringSessionAction {
             return ServerResponse.createByErrorMessage("参数错误");
         }
         return userService.forgetCheckAnswer(username,question,answer);
+    }
+    /*
+     * create by: CZP
+     * description:测试事务
+     * create time: 13:32 2018/12/14
+     * @return
+     */
+    @RequestMapping(value = "/test.do")
+    public ServerResponse test(){
+        return userService.test();
     }
 }

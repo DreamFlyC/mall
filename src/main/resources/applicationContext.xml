@@ -9,9 +9,8 @@
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:component-scan base-package="com.fun.mall" annotation-config="true"/>
+    <context:component-scan base-package="com.fun.mall.persistence,com.fun.mall.service" />
     <aop:aspectj-autoproxy/>
-
     <import resource="spring-mybatis.xml"/>
     <import resource="applicationContext-springSession.xml"/>
 

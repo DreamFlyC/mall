@@ -21,7 +21,7 @@ import java.util.UUID;
  * @ Modified By：
  * @Version: 1.0$
  */
-@Transactional(rollbackFor = Exception.class)
+
 @Service(value = "UserServiceImpl")
 public class UserServiceImpl implements IUserService {
 
@@ -42,7 +42,6 @@ public class UserServiceImpl implements IUserService {
         if(resultCount==0){
             return ServerResponse.createByErrorMessage("手机号码不存在");
         }
-      //  String md5Password= MD5Util.MD5EncodeUtf8(password);
         User user=userMapper.selectLogin(phone,password);
         if(user==null){
             return ServerResponse.createByErrorMessage("密码错误");
@@ -163,5 +162,26 @@ public class UserServiceImpl implements IUserService {
         }
         String token = UUID.randomUUID().toString();
         return ServerResponse.createBySuccess(token);
+    }
+    /*
+     * create by: CZP
+     * description:测试
+     * create time: 14:04 2018/12/14
+     * @return 
+     */
+    @Transactional
+    @Override
+    public ServerResponse test(){
+        User user=new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setRole(1);
+        user.setPhone("10086");
+        userMapper.insertSelective(user);
+        int i=1/0;
+        user.setId(22);
+        user.setPassword("123456789");
+        userMapper.updateByPrimaryKeySelective(user);
+        return null;
     }
 }

@@ -8,12 +8,10 @@ import redis.clients.jedis.Jedis;
  * @Version: 1.0$
  */
 
-public class ReidsTest {
+public class RedisTest {
     public static void main(String[] args) {
         Jedis jedis=new Jedis("138.128.196.86");
-        if(jedis !=null){
-            jedis.auth("742003942");
-            System.out.println("服务正在运行: "+jedis.ping());
-        }
+        jedis.auth("742003942");
+        System.out.println("服务正在运行: "+jedis.ping());
     }
 }
