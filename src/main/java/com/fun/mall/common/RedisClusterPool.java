@@ -1,6 +1,7 @@
 package com.fun.mall.common;
 
 import com.fun.mall.util.PropertiesUtil;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.HostAndPort;
@@ -8,6 +9,7 @@ import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -77,12 +79,16 @@ public class RedisClusterPool {
 
     public static void main(String[] args) {
         JedisCluster cluster=RedisClusterPool.getJedisCluster();
-        for (int i = 10; i < 100; i++) {
-            cluster.set("key" + i, "value" + i);
+        long start=System.currentTimeMillis();
+        System.out.println("开始时间："+ DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
+        for (int i = 0; i < 1000000; i++) {
+            cluster.setex("key" + i,600, "value" + i);
+            //cluster.del("key"+i);
         }
         RedisClusterPool.returnResource(cluster);
-
-        System.out.println("The end!");
+        long end=System.currentTimeMillis();
+        System.out.println("结束时间："+ DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
+        System.out.println("总用时为:"+((end-start)/1000)+"秒");
     }
 
 }

@@ -23,7 +23,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/manage/**"/>
-            <bean class="com.fun.mall.interceptor.AuthorityInterceptor"/>
+            git<bean class="com.fun.mall.interceptor.AuthorityInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>    
     
