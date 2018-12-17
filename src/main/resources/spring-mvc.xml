@@ -19,6 +19,14 @@
     <!-- 开启mvc注解 -->
     <mvc:default-servlet-handler/>
 
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/manage/**"/>
+            <bean class="com.fun.mall.interceptor.AuthorityInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>    
+    
     <!--  配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，3.04新增功能，需要重新设置spring-mvc-3.0.xsd-->
     <mvc:resources mapping="/img/**" location="/img/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
