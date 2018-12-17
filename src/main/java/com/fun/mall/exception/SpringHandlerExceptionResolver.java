@@ -10,11 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -41,7 +39,7 @@ import java.util.Map;
  * @ Modified By：
  * @ Version    : 1.0$
  */
-@Component
+
 public class SpringHandlerExceptionResolver implements HandlerExceptionResolver, Ordered {
 
     private static Logger log= LoggerFactory.getLogger(SpringHandlerExceptionResolver.class);
@@ -50,7 +48,6 @@ public class SpringHandlerExceptionResolver implements HandlerExceptionResolver,
 
     private int order=Ordered.HIGHEST_PRECEDENCE;
 
-    @Autowired
     public SpringHandlerExceptionResolver(FastJsonConfig fastJsonConfig) {
         this.fastJsonConfig = fastJsonConfig;
     }
@@ -133,6 +130,8 @@ public class SpringHandlerExceptionResolver implements HandlerExceptionResolver,
             }
             else if (ex instanceof AsyncRequestTimeoutException) {
                 return result(HttpExceptionEnum.ASYNC_REQUEST_TIMEOUT_EXCEPTION, request);
+            }else{
+                return result(HttpExceptionEnum.OTHER_EXCEPTION,request);
             }
         } catch (Exception handlerException) {
             log.warn("Handling of [" + ex.getClass().getName() + "] resulted in Exception", handlerException);
