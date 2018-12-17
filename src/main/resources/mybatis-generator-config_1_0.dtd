@@ -208,8 +208,8 @@
   pattern CDATA #REQUIRED>
 
 <!--
-  The except element is used to identify an exception to the ignoreColumnsByRegex rule.
-  If a column matches the regex rule, but also matches the exception, then the
+  The except element is used to identify an com.fun.mall.exception to the ignoreColumnsByRegex rule.
+  If a column matches the regex rule, but also matches the com.fun.mall.exception, then the
   column will be included in the generated objects.
 -->
 <!ELEMENT except EMPTY>

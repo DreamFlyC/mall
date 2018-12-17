@@ -19,7 +19,7 @@
     <location>/error.html</location>
   </error-page>
   <error-page>  &lt;!&ndash;当系统出现Exception，跳转到页面error.html&ndash;&gt;
-      <exception-type>java.lang.Exception</exception-type>
+      <com.fun.mall.exception-type>java.lang.Exception</com.fun.mall.exception-type>
       <location>/error.html</location>
   </error-page>-->
 
