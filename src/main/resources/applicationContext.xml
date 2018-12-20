@@ -14,6 +14,6 @@
     </context:component-scan>
     <aop:aspectj-autoproxy/>
     <import resource="spring-mybatis.xml"/>
-    <import resource="applicationContext-springSession.xml"/>
+    <!--<import resource="applicationContext-springSession.xml"/>-->
 
 </beans>
