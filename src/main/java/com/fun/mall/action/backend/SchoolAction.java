@@ -2,7 +2,7 @@ package com.fun.mall.action.backend;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.fun.mall.common.GetLatAndLngByBaidu;
+import com.fun.mall.common.GetLatAndLngByTencent;
 import com.fun.mall.entity.School;
 import com.fun.mall.service.ISchoolService;
 import com.fun.mall.util.ExportUtil;
@@ -47,19 +47,25 @@ public class SchoolAction {
         List<School> dataList = JSON.parseObject(data, new TypeReference<List<School>>() {
         });
         for (int i = 0; i < dataList.size(); i++) {
-            GetLatAndLngByBaidu getLatAndLngByBaidu = new GetLatAndLngByBaidu();
-            Object[] o = getLatAndLngByBaidu.getCoordinate(dataList.get(i).getSchool());
-            //经度
-            System.out.println(o[0]);
-            //纬度
-            System.out.println(o[1]);
+
             School school = new School();
             school.setAddress(dataList.get(i).getAddress());
             school.setPost(dataList.get(i).getPost());
             school.setTel(dataList.get(i).getTel());
             school.setSchool(dataList.get(i).getSchool());
-            school.setLongitude((String) o[0]);
-            school.setLatitude((String) o[1]);
+
+            try {
+                Object[] o ;
+                // 百度API
+                //o= GetLatAndLngByBaidu.getCoordinate(dataList.get(i).getSchool());
+                //腾讯API
+                o= GetLatAndLngByTencent.getCoordinate(dataList.get(i).getSchool());
+                school.setLongitude((String) o[0]);
+                school.setLatitude((String) o[1]);
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             schoolService.insert(school);
         }
 
@@ -69,7 +75,7 @@ public class SchoolAction {
     @ResponseBody
     public String view(HttpServletResponse response) {
         List<School> schoolList = schoolService.getList();
-        String sheetName = "杭州市中学表";
+        String sheetName = "成都市中学表";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String prefix = sdf.format(new Date());
         String fileName = prefix + sheetName;
