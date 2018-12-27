@@ -55,7 +55,6 @@
         </encoder>
     </appender>
 
-    <!-- geelynote mybatis log 日志 -->
 
     <logger name="com.fun.mall.persistence" level="DEBUG"/>
 
