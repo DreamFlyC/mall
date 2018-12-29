@@ -85,7 +85,7 @@
         </javaClientGenerator>
 
 
-        <table tableName="school" domainObjectName="School" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="crm_supplier_price" domainObjectName="CrmSupplierPrice" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
 
 

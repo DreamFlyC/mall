@@ -81,7 +81,7 @@ public class RedisClusterPool {
         JedisCluster cluster=RedisClusterPool.getJedisCluster();
         long start=System.currentTimeMillis();
         System.out.println("开始时间："+ DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 100000; i++) {
             cluster.setex("key" + i,600, "value" + i);
             //cluster.del("key"+i);
         }

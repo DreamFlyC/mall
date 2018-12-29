@@ -92,7 +92,7 @@ public class RedisUtil {
      */
     private static void returnBrokenResource(Jedis jedis) {
         if (null != jedis && null != jedisPool) {
-            jedisPool.returnResource(jedis);
+            jedisPool.close();
         }
     }
 
