@@ -16,13 +16,13 @@ import java.util.Set;
  * @ Date       ：Created in 14:30 2018/12/5
  * @ Description：Redis工具类
  * @ Modified By：
- * @Version: 1.0$
+ * @ Version    : 1.0.0$
  */
 public class RedisUtil {
 
     private static Logger log = LoggerFactory.getLogger(RedisUtil.class);
 
-    private static JedisPool jedisPool = null;
+    private static JedisPool jedisPool;
 
     private RedisUtil() {
 
@@ -57,7 +57,7 @@ public class RedisUtil {
     /**
      * 从jedis连接池中获取获取jedis对象
      *
-     * @return
+     * @return jedis实例
      */
     private Jedis getJedis() {
         return jedisPool.getResource();
@@ -68,7 +68,7 @@ public class RedisUtil {
     /**
      * 获取JedisUtil实例
      *
-     * @return
+     * @return jedis实例
      */
     public static RedisUtil getInstance() {
         return REDISUTIL;
@@ -77,7 +77,7 @@ public class RedisUtil {
     /**
      * 回收jedis(放到finally中)
      *
-     * @param jedis
+     * @param jedis jedis
      */
     private void returnJedis(Jedis jedis) {
         if (null != jedis && null != jedisPool) {
@@ -88,7 +88,7 @@ public class RedisUtil {
     /**
      * 销毁连接(放到catch中)
      *
-     * @param jedis
+     * @param jedis jedis
      */
     private static void returnBrokenResource(Jedis jedis) {
         if (null != jedis && null != jedisPool) {
@@ -216,14 +216,14 @@ public class RedisUtil {
             jedis = getJedis();
             jedis.select(dbIndex);
             jedis.set(key, value);
-            if (expireTime > 0){
+            if (expireTime > 0) {
                 jedis.expire(key, expireTime);
             }
         } catch (Exception e) {
             isBroken = true;
             throw e;
         } finally {
-            returnResource(jedis, isBroken);
+            close(jedis);
         }
     }
 
@@ -239,7 +239,7 @@ public class RedisUtil {
             isBroken = true;
             throw e;
         } finally {
-            returnResource(jedis, isBroken);
+            close(jedis);
         }
         return result;
     }
@@ -255,20 +255,15 @@ public class RedisUtil {
             isBroken = true;
             throw e;
         } finally {
-            returnResource(jedis, isBroken);
+            close(jedis);
         }
     }
 
-    public void returnResource(Jedis jedis, boolean isBroken) {
-        if (jedis == null){
+    public void close(Jedis jedis) {
+        if (jedis == null) {
             return;
         }
-        if (isBroken){
-            jedisPool.returnBrokenResource(jedis);
-        }
-        else{
-            jedisPool.returnResource(jedis);
-        }
+        jedisPool.close();
     }
 
     /**
@@ -362,18 +357,19 @@ public class RedisUtil {
         return l;
     }
 
-    /**L
+    /**
+     * L
      * 获取当前时间
      *
      * @return 秒
      */
     public long currentTimeSecond() {
-        Long l = 0L;
+        long l = 0L;
         Jedis jedis = getJedis();
         Object obj = jedis.eval("return redis.call('TIME')", 0);
         if (obj != null) {
-            List<String> list = (List) obj;
-            l = Long.valueOf(list.get(0));
+            List list = (List) obj;
+            l = Long.parseLong((String) list.get(0));
         }
         returnJedis(jedis);
         return l;
