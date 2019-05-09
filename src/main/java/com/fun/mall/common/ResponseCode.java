@@ -5,7 +5,7 @@ package com.fun.mall.common;
  * @ Date       ：Created in 11:28 2018/11/26
  * @ Description：响应码
  * @ Modified By：
- * @Version: 1.0$
+ * @ Version: 1.0$
  */
 public enum ResponseCode {
     SUCCESS(0,"SUCCESS"),

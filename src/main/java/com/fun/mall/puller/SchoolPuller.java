@@ -30,6 +30,7 @@ public class SchoolPuller {
                 String data=sk.text().trim();
 //                System.out.println(data.substring(0,data.trim().indexOf("电")));
                 String schoolName=data.trim().split(",")[0].substring(0,data.trim().split(",")[0].length()-2);
+                
                 Object[] o= GetLatAndLngByTencent.getCoordinate(schoolName);
                 String lng= (String) o[0];
                 String lat= (String) o[1];

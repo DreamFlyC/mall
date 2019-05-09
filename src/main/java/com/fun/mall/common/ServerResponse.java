@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @ Date       ：Created in 11:23 2018/11/26
  * @ Description：响应信息
  * @ Modified By：
- * @Version: 1.0$
+ * @ Version: 1.0$
  */
 public class ServerResponse<T> implements Serializable {
 
