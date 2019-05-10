@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
  * @ Date       ：Created in 10:36 2018/11/23
  * @ Description：用户模块--spring-session
  * @ Modified By：
- * @ Version: 1.0$
+ * @ Version    : 1.0$
  */
 @Controller(value = "UserSpringSessionAction")
 @RequestMapping(value = "/user/springsession")

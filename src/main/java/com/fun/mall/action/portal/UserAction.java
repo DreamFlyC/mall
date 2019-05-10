@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  * @ Date       ：Created in 10:36 2018/11/23
  * @ Description：用户模块
  * @ Modified By：
- * @Version: 1.0$
+ * @ Version    : 1.0$
  */
 @Controller(value = "UserAction")
 @RequestMapping(value = "/user")
@@ -51,7 +51,6 @@ public class UserAction {
         if(response.isSuccess()){
             CookieUtil.writeLoginToken(httpServletResponse,session.getId());
             RedisShardedPoolUtil.setex(session.getId(),Const.RedisCacheExtime.REDIS_SESSION_EXTIME, JsonUtil.objToString(response.getData()));
-
         }
         return response;
     }
@@ -148,4 +147,5 @@ public class UserAction {
         }
         return userService.forgetCheckAnswer(username,question,answer);
     }
+
 }
