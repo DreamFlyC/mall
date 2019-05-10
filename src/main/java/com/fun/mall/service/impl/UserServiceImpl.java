@@ -40,12 +40,15 @@ public class UserServiceImpl implements IUserService {
     public ServerResponse<User> login(String phone, String password) {
         int resultCount=userMapper.checkPhone(phone);
         if(resultCount==0){
+            log.error("手机号码不存在");
             throw new RuntimeException("手机号码不存在");
 //            return ServerResponse.createByErrorMessage("手机号码不存在");
         }
         User user=userMapper.selectLogin(phone,password);
         if(user==null){
-            return ServerResponse.createByErrorMessage("密码错误");
+            log.error("密码错误");
+            throw new RuntimeException("密码错误");
+//            return ServerResponse.createByErrorMessage("密码错误");
         }
 //        user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess("登录成功",user);
