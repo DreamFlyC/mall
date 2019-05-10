@@ -45,6 +45,7 @@ public class UserSpringSessionAction {
     @ResponseBody
     public ServerResponse<User> login(@RequestParam("phone") String phone, @RequestParam("password") String password,
                                       HttpSession session){
+        log.info("username:{},password:{}",phone,password);
         ServerResponse<User> response=userService.login(phone,password);
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());

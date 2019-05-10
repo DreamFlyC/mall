@@ -97,6 +97,7 @@ public class User implements Serializable {
      *
      * @mbg.generated
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**
